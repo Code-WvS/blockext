@@ -4,6 +4,8 @@ Tutorial
     WARNING: this documentation is a work-in-progress, as is the library. So
     this document is incomplete and things will change. Sorry!
 
+    See also https://github.com/blockext/blockext/blob/master/example.py
+
 This tutorial shows you how to write extensions that are compatible with both
 `Scratch 2.0`_ and `Snap!`_.
 
@@ -27,13 +29,16 @@ Here's a quick example::
         def __init__(self):
             self.light = False
     
-        def do_toggle_light(self, times):
+        @command('press light switch %n times')
+        def do_toggle_light(self, times=1):
             for i in range(times):
                 self.light = not self.light
     
+        @predicate('light is on?')
         def is_light_on(self):
             return self.light
     
+        @reporter('weather %m.day in %m.city')
         def get_weather(self, day, city):
             import random
             return random.choice(["sunny", "cloudy", "windy"])
@@ -41,12 +46,7 @@ Here's a quick example::
     descriptor = Descriptor(
         name = "Tutorial Example",
         port = 5000,
-        blocks = [
-            Block('do_toggle_light', 'command', 'press light switch %n times',
-                defaults=[1])
-            Block('is_light_on', 'predicate', 'light is on?'),
-            Block('get_weather', 'reporter', 'weather %m.day in %m.city'),
-        ],
+        blocks = get_decorated_blocks_from_class(Tutorial),
         menus = dict(
             day = ["today", "yesterday"],
             city = ["Barcelona", "Boston", "Bournemouth"],

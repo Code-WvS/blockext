@@ -113,6 +113,7 @@ def generate_snap(descriptor, language):
         inputs = SubElement(defn, "inputs")
 
         snap_spec = ""
+        inputCounter = 0
         for part in block.parts:
             if isinstance(part, Input):
                 input_el = SubElement(inputs, "input", {
@@ -126,8 +127,8 @@ def generate_snap(descriptor, language):
                     # TODO menus
                     # XXX ^ why is there a todo comment here?
 
-                index = block.inputs.index(part)
-                part = "%'arg-{}'".format(index)
+                part = "%'arg-{}'".format(inputCounter)
+                inputCounter += 1
             else:
                 assert isinstance(part, str)
                 # Snap! doesn't allow %-signs in block text yet.

@@ -32,6 +32,11 @@ class Example:
         print(text)
         time.sleep(duration)
 
+    @command("multiple %s inputs are %s allowed")
+    def argstest(self, arg1, arg2):
+        print(arg1)
+        print(arg2)
+
     @command("play note %n")
     def play_note(self, note):
         print("DING {note}".format(note=note))
